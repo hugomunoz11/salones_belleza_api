@@ -10,7 +10,7 @@ const app = express();
 app.use(express.json());
 
 //  RUTA BASE DE LA API
-app.use('/api/v1',authRouter);
+app.use('/api/v1/auth',authRouter);
 
 //  NOTA: NO SE CREA LA VARIABLE DE ENTORNO DE PORT YA QUE AL
 //  DESPLEGARLO A HEROKU ESTE LE ASIGNA POR DEFECTO UN VALOR
