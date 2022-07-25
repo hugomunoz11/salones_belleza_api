@@ -3,6 +3,7 @@ import "./config/connectdb.js"
 import express from 'express'
 import authRouter from './routes/auth.route.js'
 import cookieParse from 'cookie-parser'
+import linkRouter from "./routes/link.router.js";
 
 const app = express();
 
@@ -15,6 +16,7 @@ app.use(cookieParse());
 
 //  RUTA BASE DE LA API
 app.use('/api/v1/auth',authRouter);
+app.use("/api/v1/links",linkRouter);
 
 //  ESTO HABILITA A LA CARPETA PUBLIC PARA QUE PUEDA SER ACCEDIDADE FORMA PUBLICA 
 app.use(express.static('public'));

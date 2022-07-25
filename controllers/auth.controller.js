@@ -1,6 +1,5 @@
 import {Usuario} from '../models/ctusuarios.js'
-import { generateRefreshToken, generateToken } from '../utils/tokenManager.js';
-import jwt from 'jsonwebtoken'
+import { generateRefreshToken, generateToken, TokenVerificationErrors } from '../utils/tokenManager.js';
 
 export const register = async (req,res) => {
     console.log(req.body);
@@ -18,8 +17,11 @@ export const register = async (req,res) => {
 
         user    = new Usuario({email,password});
         await user.save();
+
+        const {token,expireInSeconds} = generateToken(user._id);
+        generateRefreshToken(user.id,res);
         
-        return res.status(201).json({ok:true});
+        return res.status(201).json({token,expireInSeconds});
 
     }catch(error){
         console.log(error);
@@ -75,24 +77,10 @@ export const infoUser = async (req,res) => {
 export const refreshToken= (req,res) => {
     //  AQUI TIENE QUE LEER LA COOKIE
     try{
-        const refreshTokenCookie    = req.cookies.refreshToken;
-        if (!refreshTokenCookie) throw new Error("No Bearer");
-
-        const {uid} = jwt.verify(refreshTokenCookie,process.env.JWT_REFRESH);
-        const {token,expireInSeconds} = generateToken(uid);
-
+        const {token,expireInSeconds} = generateToken(req.uid);
         return res.json({token,expireInSeconds});
 
     } catch(error){
-        const TokenVerificationErrors   = {
-            "invalid signature": "La firma del jwt no es valida",
-            "jwt expired": "JWT expirado",
-            "invalid token": "Token no valido",
-            "No Bearer": "Formato de token incorrecto",
-            "jwt malformed" : "JWT Formato no valido",
-            "jwt must be provided": "Error desconocido"
-        }
-
         return res
             .status(401)
             .send({error: TokenVerificationErrors[error.message]});
