@@ -27,9 +27,12 @@ export const bodyLinkValidator = [
     .custom(async value => {
         try {
 
-            if (!value.startsWith('http://')){
+            if (!value.startsWith('http://') && !value.startsWith('https://')){
                 value = 'https://'+value;
             }
+
+            console.log('value');
+            console.log(value);
         
             await axios.get(value);
 

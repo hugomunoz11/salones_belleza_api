@@ -4,8 +4,26 @@ import express from 'express'
 import authRouter from './routes/auth.route.js'
 import cookieParse from 'cookie-parser'
 import linkRouter from "./routes/link.router.js";
+import redirecRouter from "./routes/redirect.route.js";
+import cors from 'cors';
 
 const app = express();
+
+//  SIRVE PARA VALIDAR SI EL DOMINIO QUE ESTA HACIENDO LA PETICION
+//  ESTA PERMITIDO POR LA APLICACÓN
+const whiteList = [
+    process.env.ORIGIN1
+];
+
+app.use(cors({
+    origin: function (origin,callback) {
+        if(whiteList.includes(origin)){
+            return callback(null,origin);
+        }
+
+        return callback("Error de CORS origin: "+origin+" no autorizado");
+    }
+}));
 
 //  MIDDLEWARE PARA HABILITAR QUE EXPRESS PUEDA LEER LAS SOLICITUDES
 //  EN JSON.
@@ -17,6 +35,7 @@ app.use(cookieParse());
 //  RUTA BASE DE LA API
 app.use('/api/v1/auth',authRouter);
 app.use("/api/v1/links",linkRouter);
+app.use("/",redirecRouter);
 
 //  ESTO HABILITA A LA CARPETA PUBLIC PARA QUE PUEDA SER ACCEDIDADE FORMA PUBLICA 
 app.use(express.static('public'));
