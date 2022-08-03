@@ -20,6 +20,8 @@ app.use(cors({
     origin: (origin,callback) => {
         console.log('origin flecha');
         console.log(origin);
+        console.log('wl');
+        console.log(whiteList);
         if(!origin || whiteList.includes(origin)){
             return callback(null,origin);
         }
