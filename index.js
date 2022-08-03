@@ -17,10 +17,8 @@ const whiteList = [
 ];
 
 app.use(cors({
-    origin: function (origin,callback) {
-        console.log('whitelist');
-        console.log(whiteList);
-        console.log('origin');
+    origin: (origin,callback) => {
+        console.log('origin flecha');
         console.log(origin);
         if(whiteList.includes(origin)){
             return callback(null,origin);
