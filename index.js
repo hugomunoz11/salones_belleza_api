@@ -17,6 +17,8 @@ const whiteList = [
 
 app.use(cors({
     origin: function (origin,callback) {
+        console.log('whitelist');
+        console.log(whiteList);
         if(whiteList.includes(origin)){
             return callback(null,origin);
         }
