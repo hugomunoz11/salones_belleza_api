@@ -16,18 +16,21 @@ const whiteList = [
     process.env.ORIGIN2
 ];
 
-// app.use(cors({
-//     origin: function (origin,callback) {
-//         console.log('whitelist');
-//         console.log(whiteList);
-//         if(whiteList.includes(origin)){
-//             return callback(null,origin);
-//         }
+app.use(cors({
+    origin: function (origin,callback) {
+        console.log('whitelist');
+        console.log(whiteList);
+        console.log('origin');
+        console.log(origin);
+        if(whiteList.includes(origin)){
+            return callback(null,origin);
+        }
 
-//         return callback("Error de CORS origin: "+origin+" no autorizado");
-//     }
-// }));
-app.use(cors());
+        return callback("Error de CORS origin: "+origin+" no autorizado");
+    }
+}));
+
+//app.use(cors());
 
 //  MIDDLEWARE PARA HABILITAR QUE EXPRESS PUEDA LEER LAS SOLICITUDES
 //  EN JSON.
