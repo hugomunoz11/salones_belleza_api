@@ -12,7 +12,8 @@ const app = express();
 //  SIRVE PARA VALIDAR SI EL DOMINIO QUE ESTA HACIENDO LA PETICION
 //  ESTA PERMITIDO POR LA APLICACÓN
 const whiteList = [
-    process.env.ORIGIN1
+    process.env.ORIGIN1,
+    process.env.ORIGIN2
 ];
 
 app.use(cors({
